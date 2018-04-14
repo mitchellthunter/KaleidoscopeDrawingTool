@@ -10,6 +10,7 @@ Button bm;
 
 int slices = 8; //this variable controls how many time the drawing is repeated
 int pattern = 2; //this variavble controls which drawing tool is being used
+long grad;
 
 //-----here all the arraylists for all the sketches are created-----
 ArrayList<Circle> circles = new ArrayList<Circle>();
@@ -24,19 +25,29 @@ PFont font;
 PFont font1;
 PFont font2;
 
+int Y_AXIS = 1;
+int X_AXIS = 2;
+color d1, d2;
+int col = #ffffff;
+
+
 PImage img; //here a custom image is defined
 
 void setup() {
+  //size(600,600,P3D);
   fullScreen(P3D); //setting the sketch resolution to fullscreen
   colorMode(HSB, 100, 100, 100); //changes the colour to Hue, Saturation and Brightness
   background (0); //setting the background as black
- 
+
 
   img = loadImage("Star.png"); //here the custom image is loaded from the data folder
 
   font = createFont("GeosansLight", 22); //here three instances of a custom font are created
   font1 = createFont("GeosansLight", 15);
   font2 = createFont("GeosansLight", 10);
+
+  d1 = color(#ffffff);
+  d2 = color(#000000);
 
   ss = new SplashScreen(); //the Welcome screen is setup so it can be called
   b1 = new Button(30, height-195, #151515, '1'); //here all the buttons are defined
@@ -49,7 +60,7 @@ void setup() {
 }
 
 void draw() {
-  
+
   if (start == false) { // here the if statement checks if the sketch has been initialised, as it hasnt been the splash screen is loaded
     ss.splash();
   } else if (start == true) { //once ENTER has been pressed the  start main sketch is started and the buttons are drawn
@@ -75,6 +86,13 @@ void draw() {
     pattern2();
     pattern3();
     pattern4();
+
+    if (pattern == 1) {
+      setGradient(65, height-195, 15, 160, d1, d2, Y_AXIS);
+      stroke(#151515);
+      noFill();
+      rect(65, height-195, 15, 165);
+    }
   }
 }
 
@@ -82,6 +100,14 @@ void mousePressed() {
 
   if (b1.selected == true) { //clicking on the button changes to pattern 1
     pattern = 1;
+  }
+  if (pattern == 1) {
+    if (mouseX >= 65 && mouseX < 80 &&
+      mouseY >= height-195 && mouseY < height-35) {
+      int alpha = (int)map(grad, 0, 160, 255, 0);
+      col = ((height-195)-mouseY)+alpha;
+      println(col);
+    }
   }
   if (b2.selected == true) { //clicking on the button changes to pattern 2
     pattern = 2;
@@ -106,7 +132,7 @@ void mousePressed() {
 
 void mouseDragged() {
   if (pattern == 1) { //if the mouse is dragged and pattern one is selected a new curve is added to the array
-    curves.add(new StaticCircle(mouseX, mouseY));
+    curves.add(new StaticCircle(mouseX, mouseY, col));
   }
   if (pattern == 2) { //if the mouse is dragged and pattern two is selected a new circle is added to the array
     circles.add(new Circle(mouseX, mouseY));
@@ -117,13 +143,13 @@ void mouseDragged() {
 }
 void keyPressed() {
   if (key == ENTER) {  //transitions from splash screen to main drawing
-        start = true;
+    start = true;
   }
   if (key=='s'||key=='S') { // Saves a screenshot of current screen
-        saveFrame("line-######.png");
+    saveFrame("line-######.png");
   }
   if (key=='c'||key=='C') { //Clears all the data from the arrays on screen
-   circles.clear();
+    circles.clear();
     curves.clear();
     square.clear();
     stars.clear();
@@ -141,7 +167,7 @@ void keyPressed() {
     pattern = 4;
   }
   if (key=='-') { // Increases the number of slices in the drawing
-        slices--;
+    slices--;
   }
   if (key=='+') { // Decreases the number of slices in the drawing    
     slices++;
@@ -151,7 +177,6 @@ void keyPressed() {
 void pattern1() {
   for (int j = 0; j < curves.size(); j++) {  //here the array is defined
     StaticCircle staticcircle = curves.get(j);
-    println(staticcircle.x);
     for (int i = 0; i<slices; i++) {
       pushMatrix(); //here the sketch plane is released
       translate(width/2, height/2); //and moved so that 0,0 is now in the center of the screen
@@ -202,6 +227,20 @@ void pattern4() { //here the same thing is completed but for the 4th sketch
     for (int i = 0; i<100; i++) {
 
       custombrush.draw();
+    }
+  }
+}
+
+void setGradient(int x, int y, float w, float h, color c1, color c2, int axis ) {
+
+  noFill();
+
+  if (axis == Y_AXIS) {  // Top to bottom gradient
+    for (int i = y; i <= y+h; i++) {
+      float inter = map(i, y, y+h, 0, 1);
+      color c = lerpColor(c1, c2, inter);
+      stroke(c);
+      line(x, i, x+w, i);
     }
   }
 }
