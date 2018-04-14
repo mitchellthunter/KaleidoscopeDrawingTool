@@ -9,7 +9,7 @@ Button bp;
 Button bm;
 
 int slices = 8; //this variable controls how many time the drawing is repeated
-int pattern = 2; //this variavble controls which drawing tool is being used
+int pattern = 1; //this variavble controls which drawing tool is being used
 long grad;
 
 //-----here all the arraylists for all the sketches are created-----
