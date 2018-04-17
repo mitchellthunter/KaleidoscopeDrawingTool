@@ -35,7 +35,7 @@ PImage img; //here a custom image is defined
 
 void setup() {
   //size(600,600,P3D);
-  fullScreen(P3D); //setting the sketch resolution to fullscreen
+fullScreen(P3D); //setting the sketch resolution to fullscreen
   colorMode(HSB, 100, 100, 100); //changes the colour to Hue, Saturation and Brightness
   background (0); //setting the background as black
 
@@ -108,6 +108,9 @@ void mousePressed() {
       col = ((height-195)-mouseY)+alpha;
       println(col);
     }
+  }
+  if (pattern == 4) { //clicking on the button changes to pattern 1
+     stars.add(new CustomBrush(mouseX, mouseY));
   }
   if (b2.selected == true) { //clicking on the button changes to pattern 2
     pattern = 2;

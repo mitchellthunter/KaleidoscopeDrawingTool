@@ -12,6 +12,6 @@ class CustomBrush {  //custom brush class created
     y = height-300; //the brush is automatically moved to the bottom edge
   }
   void draw() {
-    image(img, x, height-50, 50, 50); //custom .png brush is drawn
+    image(img, x, y, 300, 300); //custom .png brush is drawn
   }
 }
