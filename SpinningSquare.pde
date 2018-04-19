@@ -23,7 +23,7 @@ class SpinningSquare{
     colorMode(HSB);
     noFill(); //fill colour is removed
     int alpha = (int)map(radius%max_size,0,max_size,255,0); //the radius of the square is mapped from 0-150 to 0-255
-    stroke(alpha+50,alpha-255, 20, alpha); //then used to create changing colour for the stroke
+    stroke(alpha+50,alpha-255, 40, alpha); //then used to create changing colour for the stroke
     rectMode(CENTER); //rectangle is set to the center of the mouse position
     rotate((TAU/360)*radius); //the radius of the circle is then divided by 360 degrees then multiplied by current radius
     rect(x,y,radius%max_size,radius%max_size); // the rectangle is drawn
